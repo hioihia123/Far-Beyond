@@ -15,6 +15,8 @@ import javax.swing.*;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.net.URL;
+import java.net.MalformedURLException;
+
 
 
 
@@ -28,24 +30,46 @@ public class Plane extends JPanel {
     Image topPipeImg;
     Image bottomPipeImg;
     
-
+    //Plane info
+    int planeX = width/8;
+    int planeY = height/2;
+    
+    int planeWidth = 54;
+    int planeHeight = 44;
+    
+    class PlaneInstance{
+        int x = planeX;
+        int y = planeY;
+        
+        int width = planeWidth;
+        int height = planeHeight;
+        Image img;
+        
+        PlaneInstance(Image img){
+            this.img = img;
+        }
+    }
+    
+    PlaneInstance newPlane;
+    
     Plane(){
         setPreferredSize(new Dimension(width, height));
         
-        URL bgURL = getClass().getResource("/PlaneGame/resources/backgroundImage.png");
-        URL planeURL = getClass().getResource("/PlaneGame/resources/plane.png");
-        URL topURL = getClass().getResource("/PlaneGame/resources/ruler.png");
-        URL bottomURL = getClass().getResource("/PlaneGame/resources/bottomRuler.png");
-
-if (bgURL == null || planeURL == null || topURL == null || bottomURL == null) {
-    System.err.println("Error: One or more image paths are incorrect.");
-    System.exit(1);
-}
-
-backgroundImg = new ImageIcon(bgURL).getImage();
-planeImg = new ImageIcon(planeURL).getImage();
-topPipeImg = new ImageIcon(topURL).getImage();
-bottomPipeImg = new ImageIcon(bottomURL).getImage();
+        try {
+            URL backgroundURL = new URL("https://raw.githubusercontent.com/hioihia123/Far-Beyond/refs/heads/main/src/classroom_with_desks_resized.png");
+            URL planeURL = new URL("https://raw.githubusercontent.com/hioihia123/Far-Beyond/refs/heads/main/src/paper_plane_pixel_style.png");
+            URL topPipeURL = new URL("https://raw.githubusercontent.com/hioihia123/Far-Beyond/refs/heads/main/src/resized_ruler_pipe.png");
+            URL bottomPipeURL = new URL("https://raw.githubusercontent.com/hioihia123/Far-Beyond/refs/heads/main/src/resized_ruler_pipe.png");
+            
+            backgroundImg = new ImageIcon(backgroundURL).getImage();
+            planeImg = new ImageIcon(planeURL).getImage();
+            topPipeImg = new ImageIcon(topPipeURL).getImage();
+            bottomPipeImg = new ImageIcon(bottomPipeURL).getImage();
+            
+        } catch (MalformedURLException e) {
+             e.printStackTrace();
+        }
+         newPlane = new PlaneInstance(planeImg);
 
         
     }
@@ -61,6 +85,10 @@ bottomPipeImg = new ImageIcon(bottomURL).getImage();
     public void draw(Graphics g){
         //background
         g.drawImage(backgroundImg, 0,0,width, height, null);
+        
+        //Plane
+        g.drawImage(newPlane.img, newPlane.x, newPlane.y, newPlane.width, newPlane.height, null);
+        
     }
 }
 
